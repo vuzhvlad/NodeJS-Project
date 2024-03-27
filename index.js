@@ -34,17 +34,17 @@ const url = require("url"); // url module, for working with urls
 //SERVER
 
 const replaceTemplate = (temp, product) => {
-  let output = temp.replace(/{%PRODUCTNAME}/g, product.productName);
-  output = output.replace(/{IMAGE}/g, product.image);
-  output = output.replace(/{%PRICE}/g, product.price);
-  output = output.replace(/{%FROM}/g, product.from);
-  output = output.replace(/{%NUTRIENTS}/g, product.nutrients);
-  output = output.replace(/{%QUANTITY}/g, product.quantity);
-  output = output.replace(/{%DESCRIPTION}/g, product.description);
-  output = output.replace(/{%ID}/g, product.id);
+  let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName);
+  output = output.replace(/{%IMAGE%}/g, product.image);
+  output = output.replace(/{%PRICE%}/g, product.price);
+  output = output.replace(/{%FROM%}/g, product.from);
+  output = output.replace(/{%NUTRIENTS%}/g, product.nutrients);
+  output = output.replace(/{%QUANTITY%}/g, product.quantity);
+  output = output.replace(/{%DESCRIPTION%}/g, product.description);
+  output = output.replace(/{%ID%}/g, product.id);
 
   if (!product.organic)
-    output = output.replace(/{%NOT_ORGANIC}/g, "not-organic");
+    output = output.replace(/{%NOT_ORGANIC%}/g, "not-organic");
   return output;
 };
 
@@ -79,6 +79,7 @@ const server = http.createServer((req, res) => {
       })
       .join("");
     const output = tempOverview.replace("{%PRODUCT_CARDS%}", cardsHtml);
+    console.log(output);
 
     res.end(output);
   } else if (pathName === "/product") {
