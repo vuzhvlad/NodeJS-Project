@@ -52,6 +52,9 @@ const tempProduct = fs.readFileSync(
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8"); //__dirname means directory name
 const dataObj = JSON.parse(data); // parsing json into an object
 
+const slugs = dataObj.map((item) => slugify(item.productName, { lower: true }));
+console.log(slugs);
+
 //we created a server by .createServer and passed a callback function that hits every time when request sends to a server
 const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true); // getting a query and a path name of our url
