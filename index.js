@@ -1,6 +1,9 @@
 const fs = require("fs"); // return object with a lot of functions
 const http = require("http"); // http module, networking capabilites(building https server)
 const url = require("url"); // url module, for working with urls
+
+const slugify = require("slugify");
+
 const replaceTemplate = require("./modules/replaceTemplate"); // importing our own module
 
 //////////////////////////
