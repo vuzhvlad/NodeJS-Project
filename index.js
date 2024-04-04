@@ -1,10 +1,10 @@
-const fs = require("fs"); // return object with a lot of functions
-const http = require("http"); // http module, networking capabilites(building https server)
-const url = require("url"); // url module, for working with urls
+const fs = require('fs'); // return object with a lot of functions
+const http = require('http'); // http module, networking capabilites(building https server)
+const url = require('url'); // url module, for working with urls
 
-const slugify = require("slugify");
+const slugify = require('slugify');
 
-const replaceTemplate = require("./modules/replaceTemplate"); // importing our own module
+const replaceTemplate = require('./modules/replaceTemplate'); // importing our own module
 
 //////////////////////////
 //FILES
@@ -39,17 +39,17 @@ const replaceTemplate = require("./modules/replaceTemplate"); // importing our o
 
 const tempOverview = fs.readFileSync(
   `${__dirname}/templates/template-overview.html`,
-  "utf-8"
+  'utf-8'
 );
 const tempCard = fs.readFileSync(
   `${__dirname}/templates/template-card.html`,
-  "utf-8"
+  'utf-8'
 );
 const tempProduct = fs.readFileSync(
   `${__dirname}/templates/template-product.html`,
-  "utf-8"
+  'utf-8'
 );
-const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8"); //__dirname means directory name
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8'); //__dirname means directory name
 const dataObj = JSON.parse(data); // parsing json into an object
 
 const slugs = dataObj.map((item) => slugify(item.productName, { lower: true }));
@@ -59,23 +59,23 @@ console.log(slugs);
 const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true); // getting a query and a path name of our url
 
-  if (pathname === "/" || pathname === "/overview") {
+  if (pathname === '/' || pathname === '/overview') {
     res.writeHead(200, {
       // sending header
-      "Content-type": "text/html",
+      'Content-type': 'text/html',
     });
 
     const cardsHtml = dataObj
       .map((el) => {
         return replaceTemplate(tempCard, el);
       })
-      .join("");
-    const output = tempOverview.replace("{%PRODUCT_CARDS%}", cardsHtml);
+      .join('');
+    const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
 
     res.end(output);
-  } else if (pathname === "/product") {
+  } else if (pathname === '/product') {
     res.writeHead(200, {
-      "Content-type": "text/html",
+      'Content-type': 'text/html',
     });
 
     const product = dataObj[query.id];
@@ -83,22 +83,22 @@ const server = http.createServer((req, res) => {
     const output = replaceTemplate(tempProduct, product);
 
     res.end(output);
-  } else if (pathname === "/api") {
+  } else if (pathname === '/api') {
     res.writeHead(200, {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     });
     res.end(data);
   } else {
     res.writeHead(404, {
       // write a header and making it into an error
-      "Content-type": "text/html",
-      "my-own-header": "hello -world",
+      'Content-type': 'text/html',
+      'my-own-header': 'hello -world',
     });
-    res.end("<h1>Page not found!</h1>");
+    res.end('<h1>Page not found!</h1>');
   }
 }); // server is a result of creating method
 
 //then we started listening for incoming request on local host api and on port(8000)
-server.listen(8000, "127.0.0.1", () => {
-  console.log("Server started, listening to requests on port 8000");
+server.listen(8000, '127.0.0.1', () => {
+  console.log('Server started, listening to requests on port 8000');
 }); // start listening for incoming requests
